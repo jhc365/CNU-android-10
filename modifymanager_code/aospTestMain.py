@@ -26,7 +26,7 @@ class modifyManager():#modify
         serverIp = "0.0.0.0"
         portNum = "8888"
 
-        fpath = self.getFilePath("ZygoteINit.java")
+        fpath = self.getFilePath("ZygoteInit.java")
         if fpath == None:
             print("ZygoteINit.java 파일이 존재하지 않습니다.")
             return None
