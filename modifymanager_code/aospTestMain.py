@@ -49,29 +49,31 @@ class modifyManager():#modify
 
         with open(fpath, 'w') as f:
             ###소켓 통신 위한 파일 import 추가
-            f.write("import java.io.IOException;")
-            f.write("import java.io.OutputStream;")#서버로 전송만을 위한 ouput 스트림
-            f.write("import java.net.Socket;")
-            f.write("import java.net.UnknownHostException;")
+            print("import문 삽입")
+            f.write("import java.io.IOException;\n")
+            f.write("import java.io.OutputStream;\n")#서버로 전송만을 위한 ouput 스트림
+            f.write("import java.net.Socket;\n")
+            f.write("import java.net.UnknownHostException;\n")
 
             for codeline in codelines:#읽은 파일 한줄씩 비교/ 쓰기
 
-                if "runSelectLoop()" in codeline:#runselectloop 메소드 앞에서 zygote 종료 전송
-                    f.write(f'')
-                    f.write(f'String startmessage = "Zstart";')#자이고트 시작 메시지
-                    f.write(f'outStream.write(startmessage.getBytes());')
-                    f.write(f'outStream.flush();')
+                if "runSelectLoop" in codeline:#runselectloop 메소드 앞에서 zygote 종료 전송
+                    print ("zygote end 통신코드 삽입")
+                    f.write(f'String startmessage = "Zend";\n')#프로세스 생성 종료 메시지
+                    f.write(f'outStream.write(startmessage.getBytes());\n')
+                    f.write(f'outStream.flush();\n')
 
 
                 f.write(codeline)#기존 파일 코드 작성
 
                 if "main(String argv[])" in codeline: #메인문 탐색, 메인문에에 코드 삽입
                     ### 소켓통신시작 및 Zygote 시작 알리는 통신 실시
-                    f.write(f'Socket sk = new Socket("{serverIp}" , {portNum}) ;')#소켓 연결
-                    f.write(f'OutputStream outStream = sk.getOutputStream();')#전송용 outputstream
-                    f.write(f'String startmessage = "Zend";')#생성 종료 메시지
-                    f.write(f'outStream.write(startmessage.getBytes());')
-                    f.write(f'outStream.flush();')
+                    print("소켓통신 시작 코드 삽입")
+                    f.write(f'Socket sk = new Socket("{serverIp}" , {portNum}) ;\n')#소켓 연결
+                    f.write(f'OutputStream outStream = sk.getOutputStream();\n')#전송용 outputstream
+                    f.write(f'String startmessage = "Zend";\n')#생성 종료 메시지
+                    f.write(f'outStream.write(startmessage.getBytes());\n')
+                    f.write(f'outStream.flush();\n')
 
 
 
