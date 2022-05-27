@@ -14,7 +14,7 @@ class modifyManager():#modify
                 print(root + fname)
                 if walkin_fname == fname: #일치하는 파일 발견
                     print("파일 경로를 찾았습니다")
-                    return root + fname #경로 + fname으로 파일 전체 상대 경로 반환
+                    return root + "/" + fname #경로 + fname으로 파일 전체 상대 경로 반환
         print("파일 경로 탐색에 실패하였습니다")
         return None #None 반환시 파일 없는것으로 판단
 
