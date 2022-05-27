@@ -50,7 +50,6 @@ class modifyManager():#modify
         with open(fpath, 'w') as f:
             ###소켓 통신 위한 파일 import 추가
             print("import문 삽입")
-            f.write("import java.io.IOException;\n")
             f.write("import java.io.OutputStream;\n")#서버로 전송만을 위한 ouput 스트림
             f.write("import java.net.Socket;\n")
             f.write("import java.net.UnknownHostException;\n")
@@ -59,7 +58,7 @@ class modifyManager():#modify
 
                 if "runSelectLoop" in codeline:#runselectloop 메소드 앞에서 zygote 종료 전송
                     print ("zygote end 통신코드 삽입")
-                    f.write(f'String startmessage = "Zend";\n')#프로세스 생성 종료 메시지
+                    f.write(f'String endmessage = "Zend";\n')#프로세스 생성 종료 메시지
                     f.write(f'outStream.write(startmessage.getBytes());\n')
                     f.write(f'outStream.flush();\n')
 
