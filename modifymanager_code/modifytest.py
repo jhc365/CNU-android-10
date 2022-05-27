@@ -2,6 +2,7 @@ import aospTestMain
 
 
 def main():
+    print("ModifyManager started")
     modM = aospTestMain.modifyManager()
     modM.modify('')
 

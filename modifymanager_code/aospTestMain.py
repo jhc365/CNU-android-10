@@ -7,11 +7,15 @@ class modifyManager():#modify
 
     # os.walk() 함수를 사용하면 편합니다.
     def getFilePath(self,fname):#fname 위치 찾아 문자열로 반환
+        print("파일 경로 탐색을 시작합니다")
         root_dir = "./"
         for (root, dirs, files) in os.walk(root_dir):
             for walkin_fname in files:
+                print(root + fname)
                 if walkin_fname == fname: #일치하는 파일 발견
+                    print("파일 경로를 찾았습니다")
                     return root + fname #경로 + fname으로 파일 전체 상대 경로 반환
+        print("파일 경로 탐색에 실패하였습니다")
         return None #None 반환시 파일 없는것으로 판단
 
     # abcAfter.txt의 2번째 줄에 code를 삽입해주시면 됩니다.
@@ -29,14 +33,19 @@ class modifyManager():#modify
         else:
             print(f'ZygoteINit.java 경로: {fpath}')
 
+        print("zygote 코드 수정을 시작합니다")
+
         with open(fpath, 'r') as fr: #파일 읽기모드로 열기
             codelines = fr.readlines() #파일 읽어와 배열 저장
+        fr.close()
+        print("ZygoteInit 파일 열람")
 
         with open("ZygoteInit_backup.java",'w') as fb:#백업용 파일 생성
             for line in codelines:
                 fb.write(line)#백업
 
         print("ZygoteInit.java 파일이 현재 폴더에 백업되었습니다.")
+        fb.close()
 
         with open(fpath, 'w') as f:
             ###소켓 통신 위한 파일 import 추가
@@ -47,7 +56,7 @@ class modifyManager():#modify
 
             for codeline in codelines:#읽은 파일 한줄씩 비교/ 쓰기
 
-                if  "runSelectLoop()" in codeline:#runselectloop 메소드 앞에서 zygote 종료 전송
+                if "runSelectLoop()" in codeline:#runselectloop 메소드 앞에서 zygote 종료 전송
                     f.write(f'')
                     f.write(f'String startmessage = "Zstart";')#자이고트 시작 메시지
                     f.write(f'outStream.write(startmessage.getBytes());')
@@ -60,18 +69,16 @@ class modifyManager():#modify
                     ### 소켓통신시작 및 Zygote 시작 알리는 통신 실시
                     f.write(f'Socket sk = new Socket("{serverIp}" , {portNum}) ;')#소켓 연결
                     f.write(f'OutputStream outStream = sk.getOutputStream();')#전송용 outputstream
-                    f.write(f'String startmessage = "Zstart";')#자이고트 시작 메시지
+                    f.write(f'String startmessage = "Zend";')#생성 종료 메시지
                     f.write(f'outStream.write(startmessage.getBytes());')
                     f.write(f'outStream.flush();')
 
-        fclose
 
 
+        f.close()
 
 
-
-
-        return None #None 반환시 실패로 간주
+        return None
 
 
 class buildManager():
