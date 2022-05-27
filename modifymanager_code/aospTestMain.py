@@ -59,7 +59,7 @@ class modifyManager():#modify
                 if "runSelectLoop" in codeline:#runselectloop 메소드 앞에서 zygote 종료 전송
                     print ("zygote end 통신코드 삽입")
                     f.write(f'String endmessage = "Zend";\n')#프로세스 생성 종료 메시지
-                    f.write(f'outStream.write(startmessage.getBytes());\n')
+                    f.write(f'outStream.write(endmessage.getBytes());\n')
                     f.write(f'outStream.flush();\n')
 
 
