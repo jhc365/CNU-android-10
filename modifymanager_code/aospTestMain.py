@@ -62,13 +62,16 @@ class modifyManager():#modify
         print("ZygoteInit.java 파일이 현재 폴더에 백업되었습니다.")
         fb.close()
 
+        import_inserted = False #import문 삽입 위한 bool문
+
         with open(fpath, 'w') as f:
             for codeline in codelines:#읽은 파일 한줄씩 비교/ 쓰기
-                if "import" in codeline:
-                    ###소켓 통신 위한 파일 import 추가
-                    print("import문 삽입")
-                    f.write(self.imp)  # 서버로 전송만을 위한 ouput 스트림
-                    f.write(codeline)  # 기존 파일 코드 작성
+                if not import_inserted:
+                    if "import" in codeline:
+                        ###소켓 통신 위한 파일 import 추가
+                        print("import문 삽입")
+                        f.write(self.imp)  # 서버로 전송만을 위한 ouput 스트림
+                        f.write(codeline)  # 기존 파일 코드 작성
 
                 if ZstartMethod in codeline: #메인문 탐색, 메인문에에 코드 삽입
                     ### 소켓통신시작 및 Zygote 시작 알리는 통신 실시
