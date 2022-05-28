@@ -72,7 +72,7 @@ class modifyManager():#modify
                         print("import문 삽입")
                         f.write(self.imp)  # 서버로 전송만을 위한 ouput 스트림
                         f.write(codeline)  # 기존 파일 코드 작성
-                        import_inserted = False
+                        import_inserted = True
 
                 if ZstartMethod in codeline: #메인문 탐색, 메인문에에 코드 삽입
                     ### 소켓통신시작 및 Zygote 시작 알리는 통신 실시
