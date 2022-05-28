@@ -65,7 +65,7 @@ class modifyManager():#modify
         ZendMethod = input("코드 내 함수(문자열)을 입력하십시오 :")
         print("코드 위치를 입력하십시오")
         ZEMlocation = input("1.위 2.아래 :")
-        if ((ZSMlocation == "1") | (ZSMlocation == "2"))&((ZEMlocation != "1") | (ZEMlocation != "2")):
+        if not (((ZSMlocation == "1") | (ZSMlocation == "2"))&((ZEMlocation == "1") | (ZEMlocation == "2"))):
             print("코드 위치 선택 값이 1 또는 2가 아닙니다.")
             return
 
