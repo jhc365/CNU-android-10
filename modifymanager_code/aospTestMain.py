@@ -62,7 +62,9 @@ class modifyManager():#modify
         print("ZygoteInit.java 파일이 현재 폴더에 백업되었습니다.")
         fb.close()
 
-        import_inserted = False #import문 삽입 위한 bool문
+        import_inserted = False #import문 삽입 여부
+        ZS_inserted = False #Zygote 시작 소켓 삽입 여부
+        ZE_inserted = True#Zygote 종료 소켓 삽입 여부
 
         with open(fpath, 'w') as f:
             for codeline in codelines:#읽은 파일 한줄씩 비교/ 쓰기
@@ -73,6 +75,7 @@ class modifyManager():#modify
                         f.write(self.imp)  # 서버로 전송만을 위한 ouput 스트림
                         f.write(codeline)  # 기존 파일 코드 작성
                         import_inserted = True
+                        continue
 
                 if ZstartMethod in codeline: #메인문 탐색, 메인문에에 코드 삽입
                     ### 소켓통신시작 및 Zygote 시작 알리는 통신 실시
@@ -83,6 +86,8 @@ class modifyManager():#modify
                     else:
                         f.write(codeline)  # 기존 파일 코드 작성
                         f.write(self.Zstart)  # 소켓 연결 및 Zygote 시작 알림
+                        ZS_inserted = True
+                        continue
 
                 if ZendMethod in codeline:#runselectloop 메소드 앞에서 zygote 종료 전송
                     print ("zygote end 통신코드 삽입")
@@ -92,10 +97,14 @@ class modifyManager():#modify
                     else:
                         f.write(codeline)  # 기존 파일 코드 작성
                         f.write(self.Zend)  # 프로세스 생성 종료 메시지
+                        ZE_inserted = True
+                        continue
 
-
+                f.write(codeline) #기존 파일 코드 작성
 
         f.close()
+        if not (import_inserted & ZS_inserted & ZE_inserted):
+            print("실패: 해당 함수 문자열 혹은 import문 위치를 찾을 수 없습니다.")
 
 
         return None
